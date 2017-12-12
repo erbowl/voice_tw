@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+      <h3>Web Speech APIサンプル</h3>
+      <div id="content"></div>
+      <!-- <script src="app.js"></script> -->
+  </body>
+
+  <script type="text/javascript">
+  // navigator.mediaDevices.getUserMedia({
+  //   audio: true,
+  //   video: false
+  // }).then(stream => {
+  //   console.log(stream);
+  // }).catch(error => {
+  //   console.log(error);
+  // });
+
+  var content = document.getElementById('content');
+
+  //音声認識APIの使用
+  var speech = new webkitSpeechRecognition();
+  var isSpeech=false;
+  // speech.continuous=true;
+  speech.lang = "ja";
+  speech.start();
+
+  speech.addEventListener( 'result' , function( e ) {
+    console.log(e.type);
+      result=e.results[0][0].transcript;
+      console.log(result);
+
+      ss = new SpeechSynthesisUtterance(result);
+      console.log(ss);
+      speechSynthesis.speak(ss);
+  });
+  //
+  // speech.addEventListener( 'speechstart' , function( e ) {
+  //   console.log(e.type);
+  // });
+  // speech.addEventListener( 'speechend' , function( e ) {
+  //   console.log(e.type);
+  // });
+  // speech.addEventListener( 'soundstart' , function( e ) {
+  //   console.log(e.type);
+  // });
+
+  speech.addEventListener( 'end' , function( e ) {
+    if(speechSynthesis.speaking){
+      ss.addEventListener('end',function(e){
+        console.log(e);
+        speech.start();
+      });
+    }else{
+        console.log(e);
+        speech.start();
+    }
+  });
+
+  </script>
+</html>
